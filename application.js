@@ -1,49 +1,21 @@
 $(document).ready(function() {
 
 $('#getLocation').on('click',function(){ 
-var latitude = "-33";
-var longitude = "151";
-	var forecastAPI = "eb7c3e22432c13886bbc7894291be3bb" //API key for forecast.io
-		var JSONURL = "https://api.forecast.io/forecast/" + forecastAPI + "/" + latitude + "," + longitude + "?units=si";
-		
-	$.getJSON(JSONURL, function(jsonData) { //Function to grab the JSON DATA
-		var todayTempMin = (jsonData["daily"]["data"][0]["temperatureMin"]);
-		console.log(jsonData["daily"]["data"][0]["temperatureMin"]);
-		console.log("Minimum temperature " + todayTempMin);
-		var todayRain = (jsonData["daily"]["data"][0]["precipIntensity"]);
-		console.log(jsonData["daily"]["data"][0]["time"]);
-		var todayHumidity = (jsonData["daily"]["data"]["humidity"]);
-		$("#titleDiv").html(jsonData["daily"]["precipIntensity"]);
-    });
-});
-		
-		
 
-/*** $('#getLocation').on('click',function(){ 
+/***START GEOLOCATION **/
 
-        if (geo_position_js.init()) {
-            geo_position_js.getCurrentPosition(show_map, handle_error);
+        if (geoPosition.init()) { //Initialises the geoPosition javascript file
+            geoPosition.getCurrentPosition(findPosition, handle_error);
         }
 
-    });
-    function show_map(position) {
-        var latitude = position.coords.latitude; //gets latitude
-        var longitude = position.coords.longitude; //gets longitude
-        console.log(latitude);
-        console.log(longitude);
-		
-		var forecastAPI = "eb7c3e22432c13886bbc7894291be3bb" //API key for forecast.io
-		var JSONURL = "https://api.forecast.io/forecast/" + forecastAPI + "/" + latitude + "," + longitude;
-		
-		$.getJSON(JSONURL,function(result){
-			$.each(result, function(i, field){
-				$("div").append(field + " ");
-				});
-				});
-		
 
-
-    }
+		function findPosition(position) { //function to find the position of the user
+        	var latitude = position.coords.latitude; //gets latitude
+			var longitude = position.coords.longitude; //gets longitude
+			console.log(latitude);
+			console.log(longitude);
+		}
+		
     function handle_error(err) {
         alert(err.code);
         if (err.code == 1) {
@@ -52,11 +24,80 @@ var longitude = "151";
     }
 
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(show_map, handle_error);
+        navigator.geolocation.getCurrentPosition(findPosition, handle_error);
     } else {
         error('not supported');
-    } ***/
-  
+    }
+    
+/**GET JSON DATA**/
+    
+	var forecastAPI = "eb7c3e22432c13886bbc7894291be3bb" //API key for forecast.io
+	var JSONURL = "TODAY.json" //** "https://api.forecast.io/forecast/" + forecastAPI + "/" + latitude + "," + longitude + "?units=si";	 **/
+	$.getJSON(JSONURL, function(jsonData) { //Function to grab the JSON DATA
+	
+/***GET USER INPUT **/
+
+		var userHeight = ($('#userHeight').val()); 
+		var userWeight = ($('#userWeight').val()); 
+		var userBMI = userWeight/((userHeight/100)^2)
+		console.log("User BMI" + userBMI);
+		var userBMIOffset = (25 - userBMI)/5; //user BMI offset .. positive values underweight, negative values overweight
+		console.log("user bmi offset " + userBMIOffset);
+		
+		/***GETS USER GENDER ***/
+		if (document.getElementById('userMale').checked) {
+			var userGender = "0"
+			console.log("male");
+		} else 
+			if (document.getElementById('userFemale').checked) {
+			var userGender = "1.5" //gender temperature offset
+			console.log("Female");
+		}
+		
+		/***GETS AGE ***/
+		var userAge = ($("#userAge").val());
+		console.log("age is" + userAge);
+		
+
+	
+		
+		
+		/** TIME STUFF
+		var date = new Date(jsonData["hourly"]["data"][0]["time"]*1000);
+		console.log(date);***/
+		
+/***TEMPERATURE NOW ***/
+	
+		var currentTemp = jsonData["currently"]["temperature"];
+		console.log("Current Temperature " + currentTemp);
+		var currentWind = jsonData["currently"]["windSpeed"];
+		console.log("Current Wind " + currentWind);
+		var currentRH = jsonData["currently"]["humidity"];
+		console.log("Current RH " + currentRH);
+		/**Finds water vapour pressure from relative humidity and current temperature**/
+		var currentVapourPressure = currentRH * 6.105 * (Math.E^((17.27*currentTemp)/(237.7+currentTemp)));
+		console.log("vapour " + currentVapourPressure);
+		/**Finds apparent 'feels like' temperature' from the above data**/
+		var currentApparentTemp = (currentTemp + (0.33 * currentVapourPressure) - (0.70 * currentWind) - 4);
+		console.log("Apparent Temperature " + currentApparentTemp);
+		
+/*** ADJUSTING APPARENT TEMPERATURE ACCORDING TO BODY BASED ON VERY LOOSE UNSCIENTIFIC OBSERVATIONS ***/
+		
+		var userApparentTemp = currentApparentTemp - userGender; //makes it colder for women
+		console.log("after gender" + userApparentTemp);
+
+		userApparentTemp = userApparentTemp - userBMIOffset; //higher BMI retains temperatures more
+		console.log("after BMI" + userApparentTemp);
+			
+		var roundedUserApparentTemp = Math.round(userApparentTemp * 10)/10;
+
+		$("#resultDiv").html("<p>" + (roundedUserApparentTemp) + "C</p>");
+		
+    });
 });
+		
+		
+});
+
 
 	

@@ -1,20 +1,50 @@
-<html>
+<!DOCTYPE html>
 
 <head>
+<link rel = "stylesheet" type = "text/css" href = "reset.css">
+<link rel = "stylesheet" type = "text/css" href = "style.css">
 <script type="text/javascript" src="jquery.min.js"></script>
 <script type="text/javascript" src="application.js"></script>
-<title>WeatherWear</title>
-
+<script type = "text/javascript" src = "geoPosition.js"></script>
 </head>
 
 <body>
-<h1>WeatherWear</h1>
-<p id="demo">What's the weather today?</p>
-<button id = "getLocation">Go</button>
+<header>
+<div id = "nav-logo">
 
-<div id = "titleDiv"></div>
+</div>
+	<div id = "nav">
+			<H1>WEATHER</H1>	
+	</div>
 
-<div id = "target"></div>
+
+</header>
+
+
+<div id = "greenbg">
+				
+				<div id = "canvas">
+				<h3>We all feel the weather a bit differently</h3>
+				<p><p>
+					<h2>What's your age?</h2>
+					<input type = "text" name = "Age" maxlength="3" id = "userAge">
+					<h2>Male or Female?</h2>
+					<input type = "radio" name = "gender" value = "male" id = "userMale">Male<br>
+					<input type = "radio" name = "gender" value = "female" id = "userFemale">Female<br>
+					<h2>What's your height (cms)?</h2>
+					<input type = "text" name = "Height" maxlength = "3" id = "userHeight">
+					<h2>What's your weight (kgs)?</h2>
+					<input type = "text" name = "Weight" maxlength = "3" id = "userWeight">
+					<p>
+					<button id = "getLocation">Go</button>
+	
+					<div id = "resultDiv"></div>
+				
+					
+				</div>
+
+
+</div>	
 
 </body>
 
