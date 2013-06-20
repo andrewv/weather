@@ -10,8 +10,8 @@ $('#getLocation').on('click',function(){
 
 
 		function findPosition(position) { //function to find the position of the user
-        	var latitude = position.coords.latitude; //gets latitude
-			var longitude = position.coords.longitude; //gets longitude
+        	latitude = position.coords.latitude; //gets latitude
+			longitude = position.coords.longitude; //gets longitude
 			console.log(latitude);
 			console.log(longitude);
 		}
