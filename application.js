@@ -35,7 +35,7 @@ $(document).ready(function() {
 
     
 		var forecastAPI = "eb7c3e22432c13886bbc7894291be3bb" 
-		var JSONURL = "https://api.forecast.io/forecast/" + forecastAPI + "/" + Location.latitude + "," + Location.longitude + "?units=si?callback=?";
+		var JSONURL = "https://api.forecast.io/forecast/" + forecastAPI + "/" + Location.latitude + "," + Location.longitude + "?units=si&callback=?";
 		console.log(JSONURL);
 			$.getJSON(JSONURL, function(jsonData) { 
 	
@@ -91,7 +91,6 @@ $(document).ready(function() {
 				$("#resultDiv").html("<p>" + (roundedUserApparentTemp) + "C</p>");
 				
 				
-		
 			}); //closes jsonDATA funciton
 		
 
