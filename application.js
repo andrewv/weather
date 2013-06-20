@@ -31,9 +31,9 @@ $('#getLocation').on('click',function(){
     
 /**GET JSON DATA**/
     
-	var forecastAPI = "eb7c3e22432c13886bbc7894291be3bb" //API key for forecast.io
-	var JSONURL = "TODAY.json" //** "https://api.forecast.io/forecast/" + forecastAPI + "/" + latitude + "," + longitude + "?units=si";	 **/
-	$.getJSON(JSONURL, function(jsonData) { //Function to grab the JSON DATA
+	var forecastAPI = "eb7c3e22432c13886bbc7894291be3bb" 
+	var JSONURL = "https://api.forecast.io/forecast/" + forecastAPI + "/" + latitude + "," + longitude + "?units=si";
+	$.getJSON(JSONURL, function(jsonData) { 
 	
 /***GET USER INPUT **/
 
