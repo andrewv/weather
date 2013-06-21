@@ -29,9 +29,9 @@ function displayPosition(position) {
   Location.latitude = position.coords.latitude;
   Location.longitude = position.coords.longitude;
   var forecastAPI = "eb7c3e22432c13886bbc7894291be3bb" 
-		var JSONURL = "https://api.forecast.io/forecast/" + forecastAPI + "/" + Location.latitude + "," + Location.longitude + "?units=si&callback=?";
+		var JSONURL = "https://api.forecast.io/forecast/" + forecastAPI + "/" + Location.latitude + "," + Location.longitude + "?units=si";
 		console.log(JSONURL);
-			$.getJSON("TODAY.json", function(jsonData) { 
+			$.getJSON(JSONURL, function(jsonData) { 
 	
 				/***GET USER INPUT **/
 				console.log("hello");
