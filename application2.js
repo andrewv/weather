@@ -23,7 +23,7 @@ function displayError(error) {
   };
   alert("Error: " + errors[error.code]);
 }
-
+ 
 function displayPosition(position) {
   alert("Latitude: " + position.coords.latitude + ", Longitude: " + position.coords.longitude);
   Location.latitude = position.coords.latitude;
