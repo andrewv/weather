@@ -3,38 +3,32 @@ var Location = {}; //global object
 $(document).ready(function() {
 	$('#getLocation').on('click',function(){ 
 
-	/***START GEOLOCATION **/
+	if (navigator.geolocation) {
+  var timeoutVal = 10 * 1000 * 1000;
+  navigator.geolocation.getCurrentPosition(
+    displayPosition, 
+    displayError,
+    { enableHighAccuracy: true, timeout: timeoutVal, maximumAge: 0 }
+  );
+}
+else {
+  alert("Geolocation is not supported by this browser");
+}
 
-    if (geoPosition.init()) { //Initialises the geoPosition javascript file
-    	geoPosition.getCurrentPosition(findPosition, handle_error);
-    }
+function displayError(error) {
+  var errors = { 
+    1: 'Permission denied',
+    2: 'Position unavailable',
+    3: 'Request timeout'
+  };
+  alert("Error: " + errors[error.code]);
+}
 
-		function findPosition(position) { //function to find the position of the user
-        	Location.latitude = position.coords.latitude; //gets latitude
-			Location.longitude = position.coords.longitude; //gets longitude
-			console.log(Location.latitude);
-			console.log(Location.longitude);
-
-		}
-		
-		function handle_error(err) {
-        	alert(err.code);
-			if (err.code == 1) {
-            // user said no!
-			}
-		}
-
-if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(findPosition, handle_error);
-    } else {
-        error('not supported');
-    } 
-    
-	/**GET JSON DATA**/
-
-
-    
-		var forecastAPI = "eb7c3e22432c13886bbc7894291be3bb" 
+function displayPosition(position) {
+  alert("Latitude: " + position.coords.latitude + ", Longitude: " + position.coords.longitude);
+  Location.latitude = position.coords.latitude;
+  Location.longitude = position.coords.longitude;
+  var forecastAPI = "eb7c3e22432c13886bbc7894291be3bb" 
 		var JSONURL = "https://api.forecast.io/forecast/" + forecastAPI + "/" + Location.latitude + "," + Location.longitude + "?units=si&callback=?";
 		console.log(JSONURL);
 			$.getJSON("TODAY.json", function(jsonData) { 
@@ -92,7 +86,11 @@ if (navigator.geolocation) {
 				
 				
 			}); //closes jsonDATA funciton
-		
+
+}
+
+    
+				
 
     
 }); //closes onclick
