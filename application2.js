@@ -31,7 +31,15 @@ function displayPosition(position) {
   var forecastAPI = "eb7c3e22432c13886bbc7894291be3bb" 
 		var JSONURL = "https://api.forecast.io/forecast/" + forecastAPI + "/" + Location.latitude + "," + Location.longitude + "?units=si";
 		console.log(JSONURL);
-			$.getJSON(JSONURL, function(jsonData) { 
+		
+		$.ajax({
+            type: 'GET',
+            url: JSONURL,
+            success:function(jsonData){
+             alert(data);
+            }
+        //});
+			//$.getJSON(JSONURL, function(jsonData) { 
 	
 				/***GET USER INPUT **/
 				console.log("hello");
