@@ -37,7 +37,7 @@ function displayPosition(position) {
             url: JSONURL,
             success:function(jsonData){
              alert(data);
-            }
+            //}
         //});
 			//$.getJSON(JSONURL, function(jsonData) { 
 	
@@ -92,7 +92,7 @@ function displayPosition(position) {
 
 				$("#resultDiv").html("<p>" + (roundedUserApparentTemp) + "C</p>");
 				
-				
+				}
 			}); //closes jsonDATA funciton
 
 }
