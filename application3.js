@@ -1,60 +1,30 @@
 var Location = {}; //global object
 
-$(document).ready(function() {
-	$('#getLocation').on('click',function(){ 
-		if (navigator.geolocation) {
-			var timeoutVal = 10 * 1000 * 1000;
-				navigator.geolocation.getCurrentPosition(
-				displayPosition, 
-				displayError,
-				{ enableHighAccuracy: true, timeout: timeoutVal, maximumAge: 0 }
-				);
-		}
-			else {
-				alert("Geolocation is not supported by this browser");
-				}
-		});
-		
-	function displayError(error) {
-		var errors = { 
-			1: 'Permission denied',
-			2: 'Position unavailable',
-			3: 'Request timeout'
-			};
-		alert("Error: " + errors[error.code]);
-		}
- 
-		function displayPosition(position) {
-			alert("Latitude: " + position.coords.latitude + ", Longitude: " + position.coords.longitude);
-			Location.latitude = position.coords.latitude;
-			Location.longitude = position.coords.longitude;
-			var forecastAPI = "eb7c3e22432c13886bbc7894291be3bb" 
-			var JSONURL = "https://api.forecast.io/forecast/" + forecastAPI + "/" + Location.latitude + "," + Location.longitude + "?units=si";
-			console.log(JSONURL);
-		
-
-			$.ajax({
-				url: JSONURL,
-				data: {'units':'si'},
-				dataType: "jsonp",
-				jsonp : "callback",
-				jsonpCallback: "parseData",
-				success: function(data){
-					parseData(data);
-				}
-			});
-			});	
-		 //closes onclick
+$(document).ready(function() {    
+	var forecastAPI = "eb7c3e22432c13886bbc7894291be3bb" 
+	var JSONURL = "https://api.forecast.io/forecast/" + forecastAPI + "/" + 34.056281 + "," + -78.890304;
+	console.log(JSONURL);
+	
+    $('#getLocation').on('click', function(){
+        $.ajax({
+           url: JSONURL, //URL of JSON
+           data: {'units':'si'}, // to add at end of URL
+           dataType: "jsonp", //Data type (JSONP)
+           jsonp : "callback", //Calls the function
+           jsonpCallback: "parseData", //name of function
+           success: function(data){
+               parseData(data); //runs this function
+           }
+        });
+    });
     
     function parseData(rtdata){
-		
-		console.log("hello");
-				var userHeight = ($('#userHeight').val()); 
-				var userWeight = ($('#userWeight').val()); 
-				var userBMI = userWeight/((userHeight/100)^2)
-					console.log("User BMI" + userBMI);
-				var userBMIOffset = (25 - userBMI)/5; //user BMI offset .. positive values underweight, negative values overweight
-					console.log("user bmi offset " + userBMIOffset);
+        var userHeight = ($('#userHeight').val()); 
+		var userWeight = ($('#userWeight').val()); 
+		var userBMI = userWeight/((userHeight/100)^2)
+			console.log("User BMI" + userBMI);
+		var userBMIOffset = (25 - userBMI)/5; //user BMI offset .. positive values underweight, negative values overweight
+			console.log("user bmi offset " + userBMIOffset);
 					
 				/***GETS USER GENDER ***/
 				if (document.getElementById('userMale').checked) {
@@ -73,11 +43,11 @@ $(document).ready(function() {
 	
 				/***TEMPERATURE NOW ***/
 	
-				var currentTemp = jsonData["currently"]["temperature"];
+				var currentTemp = rtdata["currently"]["temperature"];
 					console.log("Current Temperature " + currentTemp);
-				var currentWind = jsonData["currently"]["windSpeed"];
+				var currentWind = rtdata["currently"]["windSpeed"];
 					console.log("Current Wind " + currentWind);
-				var currentRH = jsonData["currently"]["humidity"];
+				var currentRH = rtdata["currently"]["humidity"];
 					console.log("Current RH " + currentRH);
 				/**Finds water vapour pressure from relative humidity and current temperature**/
 				var currentVapourPressure = currentRH * 6.105 * (Math.E^((17.27*currentTemp)/(237.7+currentTemp)));
@@ -116,17 +86,6 @@ $(document).ready(function() {
 				
 				console.log(targetCLOValue);
 
-		
-		
-			};
-		
-		
-			//$.getJSON("TODAY.json", function(jsonData) {  ///**gets the JSON***
-	
-				/***GET USER INPUT **/
-						//	}); //closes jsonDATA funciton
- 
-
-	//closes doc.ready
-
-	
+    }
+    
+});	//closes doc.ready
