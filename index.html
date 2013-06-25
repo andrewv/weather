@@ -4,6 +4,7 @@
 
 <link rel = "stylesheet" type = "text/css" href = "reset.css">
 <link rel = "stylesheet" type = "text/css" href = "style.css">
+<link href='http://fonts.googleapis.com/css?family=Lato:300,900' rel='stylesheet' type='text/css'>
 <script type="text/javascript" src="jquery.min.js"></script>
 <script type="text/javascript" src="application3.js"></script>
 <script type = "text/javascript" src = "geoPosition.js"></script>
@@ -11,41 +12,41 @@
 
 <body>
 <header>
-<div id = "nav-logo">
 
-</div>
-	<div id = "nav">
-			<H1>WEATHER</H1>	
+	<div id = "logo">
+			<img src = "weather.png">	
 	</div>
-
+ 
 
 </header>
-<div id = "container"></div>
-
-<div id = "greenbg">
 				
 				<div id = "canvas">
-				<h3>We all feel the weather a bit differently</h3>
+				<h3>The world's most personal weather forecast</h3>
+				
 				<p><p>
-					<h2>What's your age?</h2>
-					<input type = "text" name = "Age" maxlength="3" id = "userAge">
-					<h2>Male or Female?</h2>
-					<input type = "radio" name = "gender" value = "male" id = "userMale">Male<br>
-					<input type = "radio" name = "gender" value = "female" id = "userFemale">Female<br>
-					<h2>What's your height (cms)?</h2>
-					<input type = "text" name = "Height" maxlength = "3" id = "userHeight">
-					<h2>What's your weight (kgs)?</h2>
-					<input type = "text" name = "Weight" maxlength = "3" id = "userWeight">
+					<div id = "replaceInfo">
+					<h2>I am a</h2>
+					<input type = "text" name = "Age" maxlength="3" id = "userAge" value = "age" onclick="this.value='';" onfocus="this.select()" onblur="this.value=!this.value?'age':this.value;">
+					<h2> year old </h2>
+					<input type = "text" name = "gender" maxlength="6" id = "userGender" value = "gender" onclick="this.value='';" onfocus="this.select()" onblur="this.value=!this.value?'gender':this.value;">
 					<p>
-					<button id = "getLocation">Go</button>
-	
+					<h2>My height is </h2>
+					<input type = "text" name = "Height" maxlength = "3" id = "userHeight">
+					<h2>cms</h2>
+					<p>
+					<h2>My weight is </h2>
+					<input type = "text" name = "Weight" maxlength = "3" id = "userWeight">
+					<h2>kgs</h2>
+					<p>
+					<h1 id = "getLocation"><a href = "#">Go</a></h1>
+					</div>
+					<p id = "locationgrab">Please enable location services to allow us to grab the latest weather data for your location</p>
+					
 					<div id = "resultDiv"></div>
 				
 					
 				</div>
 
-
-</div>	
 
 </body>
 

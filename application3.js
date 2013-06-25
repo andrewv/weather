@@ -1,9 +1,37 @@
 var Location = {}; //global object
 
-$(document).ready(function() {    
-	var forecastAPI = "eb7c3e22432c13886bbc7894291be3bb" 
-	var JSONURL = "https://api.forecast.io/forecast/" + forecastAPI + "/" + 34.056281 + "," + -78.890304;
-	console.log(JSONURL);
+$(document).ready(function() { 
+
+			if (navigator.geolocation) {
+			var timeoutVal = 10 * 1000 * 1000;
+				navigator.geolocation.getCurrentPosition(
+				displayPosition, 
+				displayError,
+				{ enableHighAccuracy: true, timeout: timeoutVal, maximumAge: 0 }
+				);
+		}
+			else {
+				alert("Geolocation is not supported by this browser");
+				}
+		
+		
+	function displayError(error) {
+		var errors = { 
+			1: 'Permission denied',
+			2: 'Position unavailable',
+			3: 'Request timeout'
+			};
+		alert("Error: " + errors[error.code]);
+		}
+ 
+		function displayPosition(position) {
+			alert("Latitude: " + position.coords.latitude + ", Longitude: " + position.coords.longitude);
+			Location.latitude = position.coords.latitude;
+			Location.longitude = position.coords.longitude;   
+			var forecastAPI = "eb7c3e22432c13886bbc7894291be3bb" 
+			var JSONURL = "https://api.forecast.io/forecast/" + forecastAPI + "/" + Location.latitude + "," + Location.longitude;
+			console.log(JSONURL);
+	
 	
     $('#getLocation').on('click', function(){
         $.ajax({
@@ -14,9 +42,9 @@ $(document).ready(function() {
            jsonpCallback: "parseData", //name of function
            success: function(data){
                parseData(data); //runs this function
-           }
-        });
-    });
+			   }
+		});
+		});
     
     function parseData(rtdata){
         var userHeight = ($('#userHeight').val()); 
@@ -27,11 +55,11 @@ $(document).ready(function() {
 			console.log("user bmi offset " + userBMIOffset);
 					
 				/***GETS USER GENDER ***/
-				if (document.getElementById('userMale').checked) {
+				if (document.getElementById('userGender').value == "male") {
 					var userGender = "0"
 						console.log("male");
 				} else {
-				if (document.getElementById('userFemale').checked) {
+				if (document.getElementById('userGender').value == "female") {
 					var userGender = "1.5" //gender temperature offset
 						console.log("Female");
 					}
@@ -40,6 +68,8 @@ $(document).ready(function() {
 				/***GETS AGE ***/
 				var userAge = ($("#userAge").val());
 					console.log("age is" + userAge);
+					
+				document.getElementById('replaceInfo').innerHTML = "<h2>Loading</h2>";
 	
 				/***TEMPERATURE NOW ***/
 	
@@ -65,8 +95,33 @@ $(document).ready(function() {
 					console.log("after BMI" + userApparentTemp);
 			
 				var roundedUserApparentTemp = Math.round(userApparentTemp * 10)/10;
+				
+				//**RAIN
+				
+				var precipType = rtdata["currently"]["precipType"];
+				console.log(rtdata["currently"]["precipIntensity"]);
+				console.log(precipType);
+				
+				if (rtdata["currently"]["precipIntensity"] == 0) {
+					var precipIntensity = 0
+				} else {
+					var precipProbability  = rtdata["currently"]["precipType"];
+				}
+				
+				if (rtdata["currently"]["precipIntensity"] <0.1) {
+					var precipIntensity = "lightly"
+				} else {
+					if (rtdata["currently"]["precipIntensity"] <0.4) {
+						var precipIntensity = "moderately"
+					} else {
+						if (rtdata["currently"]["precipIntensity"] >0.4) {
+							var precipIntensity = "heavily"
+							}
+					}
+				}
+				
 
-				$("#resultDiv").html("<p>" + (roundedUserApparentTemp) + "C</p>");
+				
 				
 				
 				//*** CLOTHING *** Name of item, CLO value, Layer value //
@@ -85,6 +140,27 @@ $(document).ready(function() {
 				var targetCLOValue = -(0.04*userApparentTemp)+1.13
 				
 				console.log(targetCLOValue);
+				
+				if (targetCLOValue < 0.14) {
+					document.getElementById('replaceInfo').innerHTML = ""; //removes info
+					$("#replaceInfo").html("<h2>The temperature is " + (roundedUserApparentTemp) + "C</h2><p><h2>Wear a t-shirt today</h2>");
+				}
+				
+				if ((targetCLOValue >= 0.45) && (targetCLOValue <= 0.71)) {
+					document.getElementById('replaceInfo').innerHTML = ""; //removes info
+					$("#replaceInfo").html("<h2>The temperature is " + (roundedUserApparentTemp) + "C</h2><p><h2>Wear a heavy sweater with a light shirt today</h2>");
+				}
+				
+				
+				
+				//*HTML EDITING
+				
+				document.getElementById('replaceInfo').innerHTML = ""; //removes info
+				$("#replaceInfo").html("<h2>The temperature is " + (roundedUserApparentTemp) + "C</h2>");
+				
+				
+				
+			}	
 
     }
     
