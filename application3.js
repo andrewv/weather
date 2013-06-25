@@ -120,7 +120,7 @@ $(document).ready(function() {
 				}
 				
 
-				
+				 
 				
 				
 				//*** CLOTHING *** Name of item, CLO value, Layer value //
