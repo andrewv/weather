@@ -25,7 +25,6 @@ $(document).ready(function() {
 		}
  
 		function displayPosition(position) {
-			alert("Latitude: " + position.coords.latitude + ", Longitude: " + position.coords.longitude);
 			Location.latitude = position.coords.latitude;
 			Location.longitude = position.coords.longitude;   
 			var forecastAPI = "eb7c3e22432c13886bbc7894291be3bb" 
@@ -141,22 +140,14 @@ $(document).ready(function() {
 				
 				console.log(targetCLOValue);
 				
-				if (targetCLOValue < 0.14) {
-					document.getElementById('replaceInfo').innerHTML = ""; //removes info
-					$("#replaceInfo").html("<h2>The temperature is " + (roundedUserApparentTemp) + "C</h2><p><h2>Wear a t-shirt today</h2>");
-				}
-				
-				if ((targetCLOValue >= 0.45) && (targetCLOValue <= 0.71)) {
-					document.getElementById('replaceInfo').innerHTML = ""; //removes info
-					$("#replaceInfo").html("<h2>The temperature is " + (roundedUserApparentTemp) + "C</h2><p><h2>Wear a heavy sweater with a light shirt today</h2>");
-				}
+		
 				
 				
 				
 				//*HTML EDITING
 				
 				document.getElementById('replaceInfo').innerHTML = ""; //removes info
-				$("#replaceInfo").html("<h2>The temperature is " + (roundedUserApparentTemp) + "C</h2>");
+				$("#replaceInfo").html("<h2>The temperature is " + currentTemp + "C</h2><br><h2>For you, it feels like " + (roundedUserApparentTemp) + "C</h2>");
 				
 				
 				
